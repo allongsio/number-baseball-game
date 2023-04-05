@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>숫자야구 프로그램</title>
+    <script>
+      let playerGuess;
+      let randomNumber;
+      let count = 0;
+
+      function randomNumberMake() {
+        randomNumber = [];
+        let first = Math.floor(Math.random() * 10);
+        let second = Math.floor(Math.random() * 10);
+        let third = Math.floor(Math.random() * 10);
+        if (first !== second && second !== third && first !== third) {
+          randomNumber[0] = first;
+          randomNumber[1] = second;
+          randomNumber[2] = third;
+        } else {
+          randomNumberMake();
+        }
+      }
+      randomNumberMake();
+
+      function playerGuessCatch() {
+        typedPlayerGuess = document.getElementById("playerGuess").value;
+        if (
+          typedPlayerGuess[0] !== typedPlayerGuess[1] &&
+          typedPlayerGuess[1] !== typedPlayerGuess[2] &&
+          typedPlayerGuess[0] !== typedPlayerGuess[2]
+        ) {
+          playerGuess = Array.from(typedPlayerGuess);
+          compare();
+        } else {
+          alert("숫자는 서로 다른 세 숫자여야 합니다!");
+        }
+      }
+
+      function compare() {
+        let s = 0;
+        let b = 0;
+
+        for (let i = 0; i < 3; i++) {
+          if (randomNumber.includes(Number(playerGuess[i]))) {
+            b += 1;
+            document.getElementById("playerGuess").value = "";
+            if (randomNumber[i] === Number(playerGuess[i])) {
+              s += 1;
+              b -= 1;
+              document.getElementById("playerGuess").value = "";
+            }
+          }
+        }
+        if (s === 3) {
+          alert("게임에서 승리하셨습니다!");
+          window.location.reload();
+        }
+        count += 1;
+        let newTag = document.createElement("p");
+        newTag.innerHTML = `${count}번째 시도 : ${
+          playerGuess[0] * 100 + playerGuess[1] * 10 + playerGuess[2] * 1
+        }
+        ${s}S${b}B`;
+        result.appendChild(newTag);
+      }
+    </script>
+  </head>
+  <body>
+    <h1>숫자야구 프로그램</h1>
+    <input type="text" id="playerGuess" />
+    <button onclick="playerGuessCatch()">제출하기</button>
+    <div id="result"></div>
+  </body>
+</html>
